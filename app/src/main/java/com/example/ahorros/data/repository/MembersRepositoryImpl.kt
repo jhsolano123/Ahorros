@@ -1,28 +1,32 @@
 package com.example.ahorros.data.repository
 
-import com.example.ahorros.data.model.Plan
+import com.example.ahorros.data.model.CreateMemberRequest
+import com.example.ahorros.data.model.Member
 import com.example.ahorros.data.remote.PlanApiService
 import com.example.ahorros.util.Resource
 import retrofit2.HttpException
 import java.io.IOException
 
-class PlansRepositoryImpl(
+/**
+ * Implementación del repositorio de miembros.
+ * Maneja la comunicación con la API y el manejo de errores.
+ */
+class MembersRepositoryImpl(
     private val apiService: PlanApiService
-) : PlansRepository {
+) : MembersRepository {
 
-    override suspend fun getPlans(): Resource<List<Plan>> {
+    override suspend fun getMembersByPlan(planId: String): Resource<List<Member>> {
         return try {
-            val response = apiService.getPlans()
+            val response = apiService.getMembersByPlan(planId)
             if (response.isSuccessful) {
                 val body = response.body()
                 if (body != null) {
                     Resource.Success(body)
                 } else {
-                    Resource.Error("Respuesta vacía del servidor")
+                    Resource.Success(emptyList())
                 }
             } else {
-                val errorMessage = "Error ${response.code()}: ${response.message()}"
-                Resource.Error(errorMessage)
+                Resource.Error("Error ${response.code()}: ${response.message()}")
             }
         } catch (e: HttpException) {
             Resource.Error("Error de servidor: ${e.message()}")
@@ -33,15 +37,15 @@ class PlansRepositoryImpl(
         }
     }
 
-    override suspend fun getPlanById(planId: String): Resource<Plan> {
+    override suspend fun createMember(request: CreateMemberRequest): Resource<Member> {
         return try {
-            val response = apiService.getPlanById(planId)
+            val response = apiService.createMember(request)
             if (response.isSuccessful) {
                 val body = response.body()
                 if (body != null) {
                     Resource.Success(body)
                 } else {
-                    Resource.Error("Plan no encontrado")
+                    Resource.Error("Respuesta vacía del servidor")
                 }
             } else {
                 Resource.Error("Error ${response.code()}: ${response.message()}")

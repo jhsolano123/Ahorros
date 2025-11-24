@@ -1,11 +1,13 @@
 package com.example.ahorros.ui.plans
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import com.example.ahorros.ui.plandetail.PlanDetailActivity
 
 class PlansActivity : ComponentActivity() {
 
@@ -19,7 +21,9 @@ class PlansActivity : ComponentActivity() {
                     PlansScreen(
                         viewModel = viewModel,
                         onPlanClick = { plan ->
-                            // TODO: Navegar al detalle del plan seleccionado
+                            val intent = Intent(this, PlanDetailActivity::class.java)
+                            intent.putExtra(PlanDetailActivity.EXTRA_PLAN_ID, plan.id)
+                            startActivity(intent)
                         }
                     )
                 }
