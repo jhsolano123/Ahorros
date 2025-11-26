@@ -1,6 +1,7 @@
 package com.example.ahorros.data.remote
 
 import com.example.ahorros.data.model.CreateMemberRequest
+import com.example.ahorros.data.model.CreatePaymentRequest
 import com.example.ahorros.data.model.Member
 import com.example.ahorros.data.model.Payment
 import com.example.ahorros.data.model.CreatePlanRequest
@@ -38,5 +39,5 @@ interface PlanApiService {
     suspend fun getPaymentsByPlan(@Path("planId") planId: String): Response<List<Payment>>
 
     @POST("payments")
-    suspend fun createPayment(@Body payment: Payment): Response<Payment>
+    suspend fun createPayment(@Body request: CreatePaymentRequest): Response<Payment>
 }

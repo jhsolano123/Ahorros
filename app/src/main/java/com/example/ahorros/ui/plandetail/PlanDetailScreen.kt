@@ -53,6 +53,7 @@ import java.util.Locale
 fun PlanDetailScreen(
     viewModel: PlanDetailViewModel,
     onBackClick: () -> Unit,
+    onAddPaymentClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -71,8 +72,16 @@ fun PlanDetailScreen(
         },
         floatingActionButton = {
             if (uiState.plan != null) {
-                FloatingActionButton(onClick = { showAddMemberDialog = true }) {
-                    Icon(Icons.Default.Add, contentDescription = "Agregar miembro")
+                Column {
+                    FloatingActionButton(
+                        onClick = onAddPaymentClick,
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    ) {
+                        Icon(Icons.Default.Add, contentDescription = "Registrar pago")
+                    }
+                    FloatingActionButton(onClick = { showAddMemberDialog = true }) {
+                        Icon(Icons.Default.Add, contentDescription = "Agregar miembro")
+                    }
                 }
             }
         }
@@ -169,12 +178,12 @@ fun PlanDetailContent(
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Text(
-                        text = "Progreso: ${String.format("%.1f", uiState.progressPercentage)}%",
+                        text = "Progreso: ${uiState.progressPercentage}%",
                         style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold)
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     LinearProgressIndicator(
-                        progress = uiState.progressPercentage / 100f,
+                        progress = { uiState.progressPercentage / 100f },
                         modifier = Modifier.fillMaxWidth()
                     )
                 }

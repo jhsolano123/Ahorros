@@ -29,7 +29,7 @@ data class PlanDetailUiState(
     val memberCreationSuccess: Boolean = false     // <-- nuevo
 ) {
     val totalCollected: Long
-        get() = payments.sumOf { it.amount ?: 0L }
+        get() = payments.sumOf { it.amount }
 
     val progressPercentage: Int
         get() = if (plan?.targetAmount != null && plan.targetAmount > 0) {

@@ -1,5 +1,6 @@
 package com.example.ahorros.data.repository
 
+import com.example.ahorros.data.model.CreatePaymentRequest
 import com.example.ahorros.data.model.Payment
 import com.example.ahorros.data.remote.PlanApiService
 import com.example.ahorros.util.Resource
@@ -16,7 +17,13 @@ class PaymentsRepositoryImpl(
 
     override suspend fun createPayment(payment: Payment): Resource<Payment> {
         return try {
-            val response = apiService.createPayment(payment)
+            // Convertir Payment a CreatePaymentRequest (sin el id)
+            val request = CreatePaymentRequest(
+                memberId = payment.memberId,
+                planId = payment.planId,
+                amount = payment.amount
+            )
+            val response = apiService.createPayment(request)
             if (response.isSuccessful) {
                 response.body()?.let {
                     Resource.Success(it)

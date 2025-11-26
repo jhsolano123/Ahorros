@@ -1,5 +1,6 @@
 package com.example.ahorros.ui.plandetail
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,6 +14,11 @@ import androidx.compose.material3.Surface
  */
 class PlanDetailActivity : ComponentActivity() {
 
+    private val viewModel: PlanDetailViewModel by viewModels {
+        val planId = intent.getStringExtra(EXTRA_PLAN_ID) ?: ""
+        PlanDetailViewModelFactory(planId)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -22,20 +28,27 @@ class PlanDetailActivity : ComponentActivity() {
             return
         }
 
-        val viewModel: PlanDetailViewModel by viewModels {
-            PlanDetailViewModelFactory(planId)
-        }
-
         setContent {
             MaterialTheme {
                 Surface {
                     PlanDetailScreen(
                         viewModel = viewModel,
-                        onBackClick = { finish() }
+                        onBackClick = { finish() },
+                        onAddPaymentClick = {
+                            val intent = Intent(this, com.example.ahorros.ui.addpayment.AddPaymentActivity::class.java)
+                            intent.putExtra("planId", planId)
+                            startActivity(intent)
+                        }
                     )
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Recargar datos cuando volvemos de otra pantalla
+        viewModel.loadAllData()
     }
 
     companion object {

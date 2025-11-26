@@ -53,13 +53,6 @@ dependencies {
     implementation(composeBom)
     androidTestImplementation(composeBom)
 
-    // Retrofit + Gson
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-
-    // OkHttp
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

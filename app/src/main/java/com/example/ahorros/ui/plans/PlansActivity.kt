@@ -9,7 +9,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import com.example.ahorros.ui.plandetail.PlanDetailActivity
 import com.example.ahorros.ui.createplan.CreatePlanActivity
-import com.example.ahorros.ui.addpayment.AddPaymentActivity
 
 class PlansActivity : ComponentActivity() {
 
@@ -30,14 +29,16 @@ class PlansActivity : ComponentActivity() {
                         onCreatePlanClick = {
                             val intent = Intent(this, CreatePlanActivity::class.java)
                             startActivity(intent)
-                        },
-                        onAddPaymentClick = {
-                            val intent = Intent(this, AddPaymentActivity::class.java)
-                            startActivity(intent)
                         }
                     )
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Recargar planes cuando volvemos a esta pantalla
+        viewModel.loadPlans()
     }
 }
